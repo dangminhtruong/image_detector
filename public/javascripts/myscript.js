@@ -1,58 +1,96 @@
 
-function processImage() {
-    // **********************************************
-    // *** Update or verify the following values. ***
-    // **********************************************
+    function processImage() {
+        var subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
+        var uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/RecognizeText";
+        var params = {
+            "handwriting": "true",
+        };
+        var sourceImageUrl = document.getElementById("inputImage").value;
+        document.querySelector("#sourceImage").src = sourceImageUrl;
+        $.ajax({
+            url: uriBase + "?" + $.param(params),
 
-    // Replace the subscriptionKey string value with your valid subscription key.
-    var subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
+            // Request headers.
+            beforeSend: function(jqXHR){
+                jqXHR.setRequestHeader("Content-Type","application/json");
+                jqXHR.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+            },
 
-    // Replace or verify the region.
-    //
-    // You must use the same region in your REST API call as you used to obtain your subscription keys.
-    // For example, if you obtained your subscription keys from the westus region, replace
-    // "westcentralus" in the URI below with "westus".
-    //
-    // NOTE: Free trial subscription keys are generated in the westcentralus region, so if you are using
-    // a free trial subscription key, you should not need to change this region.
-    var uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze";
+            type: "POST",
 
-    // Request parameters.
-    var params = {
-        "visualFeatures": "Categories,Description,Color",
-        "details": "",
-        "language": "en",
+            // Request body.
+            data: '{"url": ' + '"' + sourceImageUrl + '"}',
+        })
+
+        .done(function(data, textStatus, jqXHR) {
+            // Show progress.
+            $("#responseTextArea").val("Handwritten text submitted. Waiting 10 seconds to retrieve the recognized text.");
+
+            // Note: The response may not be immediately available. Handwriting recognition is an
+            // async operation that can take a variable amount of time depending on the length
+            // of the text you want to recognize. You may need to wait or retry this GET operation.
+            //
+            // Wait ten seconds before making the second REST API call.
+            setTimeout(function () { 
+                // The "Operation-Location" in the response contains the URI to retrieve the recognized text.
+                var operationLocation = jqXHR.getResponseHeader("Operation-Location");
+
+                // Perform the second REST API call and get the response.
+                $.ajax({
+                    url: operationLocation,
+
+                    // Request headers.
+                    beforeSend: function(jqXHR){
+                        jqXHR.setRequestHeader("Content-Type","application/json");
+                        jqXHR.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+                    },
+
+                    type: "GET",
+                })
+
+                .done(function(respon) {
+                    // Show formatted JSON on webpage.
+                    $("#responseTextArea").val(JSON.stringify(respon, null, 2));
+                    let full = '';
+                    let text = [];
+                    let obj = respon.recognitionResult.lines;
+                        for(i in obj){
+                            full += ' ' + obj[i].text;
+                            text.push([obj[i].text]);
+                        }
+                    let url = "/save-data";
+                    let data = {
+                        qoute : {
+                            full_qoute : full,
+                            text_pice : text
+                        }
+                    }
+                    let success = function(){
+
+                    }
+                    let dataType = 'json';
+                    $.get(url, data, success, dataType);
+                    
+                })
+
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    // Display error message.
+                    var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
+                    errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
+                        jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
+                    alert(errorString);
+                });
+            }, 10000);
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            // Put the JSON description into the text area.
+            $("#responseTextArea").val(JSON.stringify(jqXHR, null, 2));
+
+            // Display error message.
+            var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
+            errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
+                jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
+            alert(errorString);
+        });
     };
-
-    // Display the image.
-    var sourceImageUrl = document.getElementById("inputImage").value;
-    document.querySelector("#sourceImage").src = sourceImageUrl;
-
-    // Perform the REST API call.
-    $.ajax({
-        url: uriBase + "?" + $.param(params),
-
-        // Request headers.
-        beforeSend: function(xhrObj){
-            xhrObj.setRequestHeader("Content-Type","application/json");
-            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-        },
-
-        type: "POST",
-
-        // Request body.
-        data: '{"url": ' + '"' + sourceImageUrl + '"}',
-    })
-
-    .done(function(data) {
-        // Show formatted JSON on webpage.
-        $("#responseTextArea").val(JSON.stringify(data, null, 2));
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        // Display error message.
-        var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-        errorString += (jqXHR.responseText === "") ? "" : jQuery.parseJSON(jqXHR.responseText).message;
-        alert(errorString);
-    });
-};
