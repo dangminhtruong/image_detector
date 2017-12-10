@@ -1,20 +1,6 @@
 
     function processImage() {
-        // **********************************************
-        // *** Update or verify the following values. ***
-        // **********************************************
-
-        // Replace the subscriptionKey string value with your valid subscription key.
         var subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
-
-        // Replace or verify the region.
-        //
-        // You must use the same region in your REST API call as you used to obtain your subscription keys.
-        // For example, if you obtained your subscription keys from the westus region, replace
-        // "westcentralus" in the URI below with "westus".
-        //
-        // NOTE: Free trial subscription keys are generated in the westcentralus region, so if you are using
-        // a free trial subscription key, you should not need to change this region.
         var uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
 
         // Request parameters.
@@ -90,31 +76,12 @@
     
 
     function findImage() {
-        // **********************************************
-        // *** Update or verify the following values. ***
-        // **********************************************
-
-        // Replace the subscriptionKey string value with your valid subscription key.
-        console.log('clicked');
         let subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
-
-        // Replace or verify the region.
-        //
-        // You must use the same region in your REST API call as you used to obtain your subscription keys.
-        // For example, if you obtained your subscription keys from the westus region, replace
-        // "westcentralus" in the URI below with "westus".
-        //
-        // NOTE: Free trial subscription keys are generated in the westcentralus region, so if you are using
-        // a free trial subscription key, you should not need to change this region.
         let uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
-
-        // Request parameters.
         let params = {
             "language": "unk",
             "detectOrientation ": "true",
         };
-
-        // Display the image.
         let sourceImageUrl = document.getElementById("inputImage").value;
        // document.querySelector("#sourceImage").src = sourceImageUrl;
 
@@ -158,7 +125,6 @@
                                 '<img src="'+ results[i].src + '" alt="result" height="250px"/>' +
                             '</div>';
                 }
-              
                 $('#result_title').html('Search results');
                 $('#result_append').html(html);
             };
