@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
                 reject(err);
             }
             database = db.db('csdl_dpt');
-            let query = {"full_qoute": { $regex: /becomes easier when/ }}
+            let query = {"full": { $regex: /The happiness/ }}
             database.collection('images').find(query).toArray((error, results)=>{
                 console.log(results);
                 resolve(results);
