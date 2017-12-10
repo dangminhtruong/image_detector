@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
      }).then((mess) => {
          res.send("Ok");
      }).catch((err) => {
-         res.send(err);
+         console.log('failer');
      });
     console.log(req.query.qoute);
     res.send(req.query.qoute);

@@ -53,6 +53,7 @@
                     $("#responseTextArea").val(JSON.stringify(respon, null, 2));
                     let full = '';
                     let text = [];
+                    let image = $('#inputImage').val();
                     let obj = respon.recognitionResult.lines;
                         for(i in obj){
                             full += ' ' + obj[i].text;
@@ -61,12 +62,13 @@
                     let url = "/save-data";
                     let data = {
                         qoute : {
+                            image_url : image, 
                             full_qoute : full,
                             text_pice : text
                         }
                     }
-                    let success = function(){
-
+                    let success = function(results){
+                        console.log(results);
                     }
                     let dataType = 'json';
                     $.get(url, data, success, dataType);
