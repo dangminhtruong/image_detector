@@ -4,15 +4,16 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/csdl_dpt";
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    console.log(req.query.full);
     new Promise((resolve, reject)=>{
         MongoClient.connect(url, (err, db)=>{
             if(err){
                 reject(err);
             }
             database = db.db('csdl_dpt');
-            let query = {"full": { $regex: /The happiness/ }}
-            database.collection('images').find(query).toArray((error, results)=>{
-                console.log(results);
+            let query = req.query.full;
+            
+            database.collection('images').find({$text: {$search: req.query.full}}).toArray((error, results)=>{
                 resolve(results);
                 db.close();
             });

@@ -1,0 +1,11 @@
+#show_result{
+    margin-top: 5vh;
+    text-align: center;
+    margin-bottom: 15vh;
+}
+.img_result{
+    margin-top: 5vh;
+    min-height: 30vh;
+    max-height: 30vh;
+    margin-bottom: 5vh;
+}
