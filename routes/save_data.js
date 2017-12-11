@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://root:789852@ds135196.mlab.com:35196/csdl_dpt";
+var url = "mongodb://localhost:27017/csdl_dpt";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,11 +14,11 @@ router.get('/', function(req, res, next) {
                  reject(err);
                };
                db.close();
-               resolve('ok');
+               resolve('success');
              });
          });
      }).then((mess) => {
-         res.send("Ok");
+         res.send({ status : mess });
      }).catch((err) => {
          console.log('failer');
      });

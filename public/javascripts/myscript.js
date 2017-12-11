@@ -56,8 +56,8 @@
                     word : word_pices
                 }
             };
-            let success = function(){
-
+            let success = function(result){
+                swal("Success !", "Images paser successfull !", "success");
             };
             let dataType = 'json';
             $.get(url, data, success, dataType);
