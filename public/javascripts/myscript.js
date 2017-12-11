@@ -125,11 +125,26 @@
                                 '<img src="'+ results[i].src + '" alt="result" height="250px"/>' +
                             '</div>';
                 }
-                $('#result_title').html('Search results');
-                $('#result_append').html(html);
+                console.log(results.length);
+                if(results.length != 0 ){
+                    $('#result_title').html('Search results ' + results.length);
+                    $('#result_append').html(html);
+                }else{
+                    let notFound = '<img src="http://govtcollegekusmi.in/images/gallery/small/sld(0).jpg" alt="" style="padding-left:40vh">';
+                    $('#result_append').html(notFound);
+                    $('#result_title').html('No images found!');
+                }
+                origin_images = '<div class="col-md-12" id="show_anh_goc">' + 
+                    '<img src="' + sourceImageUrl + '" class="img_result">' +
+                '</div>'; 
+                $('#show_anh_goc').html(origin_images);
+                $('#chuoi_goc').html(string);
+                
+                $('#result_title_details').html('Search details');
+                $('#anh_goc_title').html('Origin image');
+                $('#string_from_img').html('Strings read from images');;
             };
             let dataType = 'json';
-            console.log(string);
             $.get(url, data, success, dataType);
 
         })
