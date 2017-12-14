@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
              });
          });
      }).then((mess) => {
-         res.send({ status : mess });
+         res.send({ status : 1 });
      }).catch((err) => {
          console.log('failer');
      });

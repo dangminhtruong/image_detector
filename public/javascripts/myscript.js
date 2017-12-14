@@ -2,36 +2,25 @@
     function processImage() {
         var subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
         var uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
-
-        // Request parameters.
         var params = {
             "language": "unk",
             "detectOrientation ": "true",
         };
-
-        // Display the image.
         var sourceImageUrl = document.getElementById("inputImage").value;
        // document.querySelector("#sourceImage").src = sourceImageUrl;
-
-        // Perform the REST API call.
+       //Goi API
         $.ajax({
             url: uriBase + "?" + $.param(params),
-
-            // Request headers.
             beforeSend: function(jqXHR){
                 jqXHR.setRequestHeader("Content-Type","application/json");
                 jqXHR.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
             },
 
             type: "POST",
-
-            // Request body.
             data: '{"url": ' + '"' + sourceImageUrl + '"}',
         })
 
         .done(function(qoutes) {
-            // Show formatted JSON on webpage.
-           // $("#responseTextArea").val(JSON.stringify(qoutes, null, 2));
             let img_src = $('#inputImage').val();
             let obj = qoutes.regions[0].lines;
             let full_qoutes = '';
@@ -57,7 +46,11 @@
                 }
             };
             let success = function(result){
-                swal("Success !", "Images paser successfull !", "success");
+                if(result !== 0 ){
+                    swal("Success !", "Images paser successfull !", "success");
+                }else{
+                    swal("Co lỗi xảy ra", "Thông tin ảnh chưa được lưu", "error");
+                }
             };
             let dataType = 'json';
             $.get(url, data, success, dataType);
@@ -65,7 +58,6 @@
         })
 
         .fail(function(jqXHR, textStatus, errorThrown) {
-            // Display error message.
             var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
             errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
                 jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
@@ -85,25 +77,18 @@
         let sourceImageUrl = document.getElementById("inputImage").value;
        // document.querySelector("#sourceImage").src = sourceImageUrl;
 
-        // Perform the REST API call.
         $.ajax({
             url: uriBase + "?" + $.param(params),
-
-            // Request headers.
             beforeSend: function(jqXHR){
                 jqXHR.setRequestHeader("Content-Type","application/json");
                 jqXHR.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
             },
 
             type: "POST",
-
-            // Request body.
             data: '{"url": ' + '"' + sourceImageUrl + '"}',
         })
 
         .done(function(qoutes) {
-            // Show formatted JSON on webpage.
-           // $("#responseTextArea").val(JSON.stringify(qoutes, null, 2));
             let img_src = $('#inputImage').val();
             let obj = qoutes.regions[0].lines;
             let string = '';
@@ -150,10 +135,10 @@
         })
 
         .fail(function(jqXHR, textStatus, errorThrown) {
-            // Display error message.
             var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
             errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
                 jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
             alert(errorString);
         });
     };
+

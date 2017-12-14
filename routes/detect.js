@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
             }
             database = db.db('csdl_dpt');
             let query = req.query.full;
-            database.collection('images').find({$text: {$search: req.query.full}},{score: {"$gt": 1.0}}).toArray((error, results)=>{
+            database.collection('images').find({$text: {$search: req.query.full}},{score: {"$gt": 1.5}}).toArray((error, results)=>{
                 resolve(results);
                 db.close();
             });
