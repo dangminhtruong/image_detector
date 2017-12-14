@@ -18,12 +18,10 @@ router.get('/', function(req, res, next) {
              });
          });
      }).then((mess) => {
-         res.send({ status : 1 });
+         res.send({ success : 1 });
      }).catch((err) => {
          console.log('failer');
      });
-    console.log(req.query.qoute);
-    res.send(req.query.qoute);
 });
 
 module.exports = router;

@@ -46,10 +46,10 @@
                 }
             };
             let success = function(result){
-                if(result !== 0 ){
+                if(result.success === 1 ){
                     swal("Success !", "Images paser successfull !", "success");
                 }else{
-                    swal("Co lỗi xảy ra", "Thông tin ảnh chưa được lưu", "error");
+                    swal("Có lỗi xảy ra", "Thông tin ảnh chưa được lưu", "error");
                 }
             };
             let dataType = 'json';
