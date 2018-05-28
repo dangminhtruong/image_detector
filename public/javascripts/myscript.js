@@ -1,6 +1,6 @@
 
     function processImage() {
-        var subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
+        var subscriptionKey = "3afd8b42a8324256a76dcb4017b15c3b";
         var uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
         var params = {
             "language": "unk",
@@ -68,7 +68,7 @@
     
 
     function findImage() {
-        let subscriptionKey = "b3812f877c2f468c85e2f378960b1724";
+        let subscriptionKey = "3afd8b42a8324256a76dcb4017b15c3b";
         let uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
         let params = {
             "language": "unk",
